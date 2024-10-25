@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopNavigationBarCustom from '@/components/topbar/TopNavigationBarCustom';
 import Footer6 from '@/components/footer/Footer6';
 import PageTitle from '@/components/PageTitle';
@@ -12,13 +12,23 @@ import SelectFormInput from "@/components/form/SelectFormInput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
+import { useAuthContext } from '@/states/useAuthContext';
+import storage from "@/services/shared/storage";
 
 
 export const SessionPurposeSelector = () => {
+    const { user } = useAuthContext();
+    console.log("user:", user); // TODO: redirect if not logged
     const navigate = useNavigate();
-    const goTo = (e, path, session_purpose) => {
+
+    useEffect(() => {
+        storage.set("wizard_completed", false);
+    }, []);
+
+    const goTo = (e, path, session_purpose_id) => {
         e.preventDefault();
-        console.log(path, session_purpose);
+        console.log(path, session_purpose_id);
+        storage.set("session_purpose_id", session_purpose_id);
         navigate(path);
     }
     return <>
@@ -50,9 +60,10 @@ export const SessionPurposeSelector = () => {
 
 export const GoalSelector = () => {
     const navigate = useNavigate();
-    const goTo = (e, path, goal) => {
+    const goTo = (e, path, goal_id) => {
         e.preventDefault();
-        console.log(path, goal);
+        console.log(path, goal_id);
+        storage.set("goal_id", goal_id);
         navigate(path);
     }
     return <> 
@@ -80,14 +91,22 @@ export const GoalSelector = () => {
 } 
 
 export const GoalDetailsForm = () => {
-    const [riskTolerance, setRiskTolerance] = useState(null);
+    const navigate = useNavigate();
+    const [ riskTolerance, setRiskTolerance ] = useState(null);
     const { goal_id } = useParams();
     console.log(goal_id);
 
     const goal = goals.find((e) => e.value === Number(goal_id))
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = (values) => {
+        console.log(values);
+        const { money_available_for_goal, desired_time, risk_tolerance } = values;
+
+        storage.set("money_available_for_goal", money_available_for_goal);
+        storage.set("desired_time", desired_time);
+        storage.set("risk_tolerance_id", risk_tolerance);
+        storage.set("wizard_completed", true);
+        navigate("/chat");
     }
 
     const handleChange = e => {
@@ -98,6 +117,9 @@ export const GoalDetailsForm = () => {
     };
 
     const testInvestorSchema = yup.object({
+        money_available_for_goal: yup.number().required("No olvides la cantidad de dinero inicial para empezar a lograr este objetivo").positive("Debe ser mayor a cero").min(10000, "Puedes empezar a partir de 10000 ARS").typeError("Debe ser un número"),
+        desired_time: yup.number().required("Seleccioa en cuánto tiempo quieres lograrlo").typeError("Debe ser un número"),
+        risk_tolerance: yup.number().required('Selecciona una opción de tolerancia al riesgo'),
     });
 
     const {
@@ -136,6 +158,7 @@ export const GoalDetailsForm = () => {
                 <div className="mb-3">
                     <span style={{ fontWeight: 'bold' }}>¿En cuánto tiempo te gustaría alcanzar este objetivo?:</span>
                     <SelectFormInput name="desired_time" containerClass="col-md-4" control={control}>
+                    <option value={0}>Elije una opción</option>
                     <option value={36}>3 años</option>
                     <option value={48}>4 años</option>
                     <option value={60}>5 años</option>
@@ -157,9 +180,9 @@ export const GoalDetailsForm = () => {
             <input 
                 type="radio" 
                 id={"risk_tolerance-" + value.toString()} 
-                name={"risk_tolerance-" + value.toString()}
+                name="risk_tolerance"
                 data-risktolerance={value}
-                {...register(value.toString())}
+                {...register("risk_tolerance")}
                 className="form-check-input" 
                 value={value} 
                 onChange={handleChange} 

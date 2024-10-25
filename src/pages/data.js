@@ -203,7 +203,7 @@ export const goals = [
         value: 2,
     },
     {
-        description: "Crear un fondo para estudios universitarios (propios o de una familiar)",
+        description: "Crear un fondo para estudios universitarios (propios o de un familiar)",
         value: 3,
     },
     {

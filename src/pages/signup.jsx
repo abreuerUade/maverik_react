@@ -5,22 +5,26 @@ import PageTitle from '@/components/PageTitle';
 
 import SelectFormInput from "@/components/form/SelectFormInput";
 import TextFormInput from "@/components/form/TextFormInput";
-import { Button, Card, CardBody, CardHeader, Col, Form, FormCheck, Row, Container } from "react-bootstrap";
+import { Button, Card, CardBody, CardHeader, Col, Form, FormCheck, Row, Container, Alert } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { BsPlusLg } from "react-icons/bs";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { testInvestorQuestions } from "@/pages/data";
+import { signUp } from "@/services"
+import { getConfig } from "@/services/shared/config"
+import _ from 'lodash';
 
-
-const SignupPage = () => {
+const SignUpPage = () => {
+  console.log(getConfig());
   const questions = Object.fromEntries(
     testInvestorQuestions.map(({id, question, options}) => ([id, 0]))
   ); 
 
   const [choices, setChoices] = useState(questions); // 7 questions
-  const [birthDate, setBirthDate] = useState(new Date());
+  const [flash, setFlash] = useState({msg: "", type: "primary"});
+  const navigate = useNavigate();
 
   const handleChange = e => {
     e.persist();
@@ -32,21 +36,17 @@ const SignupPage = () => {
       ...{[question]: Number(answer)},
     }));
   };
-
-  const onSubmit = (data) => {
-    console.log(data);
-  }
   
   const testInvestorSchema = yup.object({
     email: yup.string().email('Coloca un correo electrónico válido').required('Coloca un correo electrónico'),
-    birth_date: yup.date().required('Coloca la fecha de nacimiento'),
-    q1: yup.string().required('Selecciona una respuesta para la pregunta #1'),
-    q2: yup.string().required('Selecciona una respuesta para la pregunta #2'),
-    q3: yup.string().required('Selecciona una respuesta para la pregunta #3'),
-    q4: yup.string().required('Selecciona una respuesta para la pregunta #4'),
-    q5: yup.string().required('Selecciona una respuesta para la pregunta #5'),
-    q6: yup.string().required('Selecciona una respuesta para la pregunta #6'),
-    q7: yup.string().required('Selecciona una respuesta para la pregunta #7')
+    nivel_educativo: yup.number().required('Indica tu nivel educativo'),
+    q1: yup.number().required('Selecciona una respuesta para la pregunta #1'),
+    q2: yup.number().required('Selecciona una respuesta para la pregunta #2'),
+    q3: yup.number().required('Selecciona una respuesta para la pregunta #3'),
+    q4: yup.number().required('Selecciona una respuesta para la pregunta #4'),
+    q5: yup.number().required('Selecciona una respuesta para la pregunta #5'),
+    q6: yup.number().required('Selecciona una respuesta para la pregunta #6'),
+    q7: yup.number().required('Selecciona una respuesta para la pregunta #7'),
   });
   
   const {
@@ -61,6 +61,25 @@ const SignupPage = () => {
     }
   );
 
+  const signUpSubmit = handleSubmit(async values => {
+    console.log("data: ", values);
+    const fecha_nacimiento_dia = values.fecha_nacimiento_dia.toString().padStart(2, "0");
+    const fecha_nacimiento_mes = values.fecha_nacimiento_mes.toString().padStart(2, "0");
+    const fecha_nacimiento_anio = values.fecha_nacimiento_anio.toString(); 
+
+    const fecha_nacimiento = "".concat(fecha_nacimiento_anio, "-", fecha_nacimiento_mes, "-", fecha_nacimiento_dia);
+
+    try {
+      const new_user = signUp({...values, fecha_nacimiento});
+      setFlash({
+        msg: "Registro completado. Te enviamos la clave a tu buzón de correo electrónico; usála para iniciar sesión.",
+        type: "success",
+      })
+      setTimeout(() => navigate("/sign_in"), 5000);
+    } catch (err) {
+      setFlash(err.message)
+    }
+  });
 
   return <>
       <PageTitle title='Registrarse' />
@@ -81,7 +100,7 @@ const SignupPage = () => {
                   </CardHeader>
                   <CardBody className="px-0 pb-0">
                     <CardBody className="p-0">
-                      <form onSubmit={handleSubmit(onSubmit)}>
+                      <Form onSubmit={signUpSubmit}>
                       <Row className="g-3 mt-3">
                       <span style={{ fontWeight: 'bold' }}>Correo electrónico:</span>
                       <TextFormInput 
@@ -90,21 +109,30 @@ const SignupPage = () => {
                         placeholder="nombre@gmail.com"/>
                       </Row>
                       <Row className="g-3 mt-3">
-                        <Col className="col-2">
-                        <span style={{ fontWeight: 'bold' }}>Fecha de Nacimiento:</span>
-                        <Form.Control
-                          type="date"
-                          name="birth_date"
-                          placeholder="DateRange"
-                          value={birthDate}
-                          onChange={(e) => setBirthDate(e.target.value)}
-                          control={control} 
-                        />
-                        </Col>
-                      </Row>
+                      <span style={{ fontWeight: 'bold' }}>Fecha de Nacimiento:</span>
+                      <SelectFormInput name="fecha_nacimiento_dia" containerClass="col-md-4" control={control}>
+                        <option value={0}>Elije el día</option>
+                        {_.range(1, 32).map((e, i) => (
+                          <option key={"fecha_nacimiento_dia_" + e} value={e}>{e}</option>
+                        ))}
+                      </SelectFormInput>
+                      <SelectFormInput name="fecha_nacimiento_mes" containerClass="col-md-4" control={control}>
+                        <option value={0}>Elije el mes</option>
+                        {_.range(1, 13).map((e, i) => (
+                          <option key={"fecha_nacimiento_mes_" + e} value={e}>{e}</option>
+                        ))}
+                      </SelectFormInput>
+                      <SelectFormInput name="fecha_nacimiento_anio" containerClass="col-md-4" control={control}>
+                        <option value={0}>Elije el año</option>
+                        {_.range(1950, 2051).map((e, i) => (
+                          <option key={"fecha_nacimiento_anio_" + e} value={e}>{e}</option>
+                        ))}
+                      </SelectFormInput>
+                      </Row>    
                       <Row className="g-3 mt-3">
                       <span style={{ fontWeight: 'bold' }}>¿Cuál es tu nivel educativo?:</span>
                       <SelectFormInput name="nivel_educativo" containerClass="col-md-4" control={control}>
+                        <option value={0}>Elije una opción</option>
                         <option value={1}>Educación Primaria</option>
                         <option value={2}>Educación Secundaria</option>
                         <option value={3}>Educación Superior</option>
@@ -145,8 +173,19 @@ const SignupPage = () => {
                         </div>
                       </div>
                       </Row>
-                      </form>
+                      </Form>
                     </CardBody>
+                    {flash.msg && (
+                    <CardBody className="px-0 pb-0">
+                      <Row className="g-3 mt-3">
+                        <Col>
+                        <Alert key={flash.type} variant={flash.type}>
+                        {flash.msg}
+                        </Alert>
+                        </Col>
+                      </Row>
+                    </CardBody>
+                    )}
                   </CardBody>
                 </Card>
               </Col>
@@ -158,4 +197,4 @@ const SignupPage = () => {
       <Footer6 />
     </>;
 };
-export default SignupPage;
+export default SignUpPage;

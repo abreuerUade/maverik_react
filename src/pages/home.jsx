@@ -1,4 +1,4 @@
-import TopNavigationBar from '@/components/topbar/TopNavigationBar';
+import TopNavigationBarCustom from '@/components/topbar/TopNavigationBarCustom';
 import Footer6 from '@/components/footer/Footer6';
 import PageTitle from '@/components/PageTitle';
 import { Card, Col, Container, Row } from "react-bootstrap";
@@ -6,16 +6,16 @@ const HomePage = () => {
   return <>
       <PageTitle title='Inicio' />
 
-      <TopNavigationBar menuProps={{
-      showContactUs: true,
-      showDocs: true,
-      ulClassName: 'mx-auto'
-    }} showSignUp showBuyNow data-bs-theme='dark' />
+      <TopNavigationBarCustom menuProps={{
+        showContactUs: true,
+        ulClassName: 'mx-auto'
+      }} showSignUp />
+
       <main>
-        <section className="bg-dark position-relative overflow-hidden pt-xl-9" data-bs-theme="dark">
+        <section className="position-relative overflow-hidden pt-xl-9">
         <Container className="position-relative mt-3">
             <Row>
-            <Col>Home!</Col>
+            <Col><h1 className="primary-text">Copiloto Financiero</h1></Col>
             </Row>
         </Container>
         </section>

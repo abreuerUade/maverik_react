@@ -5,13 +5,13 @@ import { LayoutProvider } from './states/useLayoutContext';
 import { ShopProvider } from './states/useShoppingContext';
 import { NotificationProvider } from './states/useNotificationContext';
 import BackToTop from './components/BackToTop';
-import configureFakeBackend from './helpers/fake-backend';
 import AppRouter from './routes/router';
 import 'swiper/swiper-bundle.css';
 import "react-toastify/dist/ReactToastify.css";
 import '@/assets/scss/style.scss';
-configureFakeBackend();
+
 const App = () => {
+  console.log(import.meta.env);
   return <HelmetProvider>
       <NotificationProvider>
         <LayoutProvider>
