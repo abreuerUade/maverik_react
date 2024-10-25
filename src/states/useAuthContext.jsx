@@ -9,7 +9,7 @@ export function useAuthContext() {
   }
   return context;
 }
-const authSessionKey = '_MIZZLE_AUTH_KEY_';
+const authSessionKey = '_MAVERIK_AUTH_KEY_';
 export function AuthProvider({
   children
 }) {

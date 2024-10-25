@@ -3,7 +3,8 @@ import { Navigate } from 'react-router-dom';
 
 const NotFound = lazy(() => import('@/pages/other-pages/NotFound'));
 const HomePage = lazy(() => import('@/pages/home'));
-const SignupPage = lazy(() => import('@/pages/signup'));
+const AuthSignIn = lazy(() => import('@/pages/signin'));
+const AuthSignUp = lazy(() => import('@/pages/signup'));
 const ChatComponent = lazy(() => import('@/pages/chat'));
 const WizardPage = lazy(() => import('@/pages/wizard'))
 
@@ -50,14 +51,29 @@ const WizardPage = lazy(() => import('@/pages/wizard'))
 //   element: <AboutV3 />
 // }];
 
+// {
+//   path: '/sign_up',
+//   name: 'sign_up',
+//   element: <SignUpPage />
+// },{
+//   path: '/sign_in',
+//   name: 'sign_in',
+//   element: <SignInPage />
+// },
+
+
 const pagesRoutes = [{
   path: '/home',
   name: 'home',
   element: <HomePage />
 },{
-  path: '/signup',
-  name: 'signup',
-  element: <SignupPage />
+  path: '/auth/sign-in',
+  name: 'auth.sign-in',
+  element: <AuthSignIn />
+},{
+  path: '/auth/sign-up',
+  name: 'auth.sign-up',
+  element: <AuthSignUp />
 },{
   path: '/chat',
   name: 'chat',

@@ -13,6 +13,7 @@ const TopNavigationBarCustom = ({
   navClassName,
   hideThemeToggler,
   darkButton,
+  menuProps,
   containerFluid,
   children,
   ...props
@@ -47,13 +48,13 @@ const TopNavigationBarCustom = ({
             </Suspense>
 
             {showSignUp && <li className="nav-item me-2 d-none d-sm-block">
-              <Link to="/signup" className="btn btn-sm btn-light mb-0">
+              <Link to="/auth/sign-up" className="btn btn-sm btn-light mb-0">
                 <BsPersonCircle className="me-1" />
                 Registrarse
               </Link>
             </li>}
             <li className="nav-item me-2 d-none d-sm-block">
-              <Link to="/signin" className="btn btn-sm btn-light mb-0">
+              <Link to="/auth/sign-in" className="btn btn-sm btn-light mb-0">
                 <BsPersonCircle className="me-1" />
                 Iniciar Sesión
               </Link>

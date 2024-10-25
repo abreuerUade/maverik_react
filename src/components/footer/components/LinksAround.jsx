@@ -8,7 +8,6 @@ const LinksAround = () => {
 
       <LogoBox />
 
-      <p className="mt-4 mb-2">A Bootstrap theme that's both stylish and functional, perfect for any type of technology or corporate website.</p>
       <ul className="list-inline mb-0 mt-4">
 
         {socialMediaLinks.map((item, idx) => {
@@ -27,27 +26,11 @@ const LinksAround = () => {
         <Col xs={6}>
           <ul className="nav flex-column">
 
-            {quickLinks.map((item, idx) => <li key={(item.link ?? '') + idx} className="nav-item">
-                <Link className="nav-link" to={item.link ?? ''}>
-                  {item.name}
-                  {item.badge && <span className="badge text-bg-danger ms-2">{item.badge}</span>}
-                </Link>
-              </li>)}
-
           </ul>
         </Col>
         <Col xs={6}>
           <ul className="nav flex-column">
 
-            {communityLinks.map((item, idx) => {
-              const Icon = item.icon;
-              return <li key={(item.link ?? '') + idx} className="nav-item">
-                  <Link className="nav-link" to={item.link ?? ''}>
-                    {item.name}
-                    {Icon && <Icon size={13} className="ms-2" />}
-                  </Link>
-                </li>;
-            })}
 
           </ul>
         </Col>

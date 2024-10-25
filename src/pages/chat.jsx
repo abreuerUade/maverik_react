@@ -12,6 +12,8 @@ import {
   import Footer6 from '@/components/footer/Footer6';
   import PageTitle from '@/components/PageTitle';
   import TopNavigationBarCustom from '@/components/topbar/TopNavigationBarCustom';
+  import { newCopilotSession } from "@/services";
+  import storage from "@/services/shared/storage";
 
   function ChatComponent() {
     const [text, setText] = useState('');
@@ -42,8 +44,6 @@ import {
   
     const submitHandler = async (e) => {
       e.preventDefault();
-    //   return setErrorText('My billing plan is gone because of many requests.');
-    //   if (!text) return;
   
       setIsResponseLoading(true);
       setErrorText('');
@@ -100,6 +100,20 @@ import {
         setTimeout(() => {
           setText('');
         }, 2);
+
+        const data = {
+          proposito_sesion_id: storage.get("session_purpose_id"),
+          objetivo_id: storage.get("goal_id"),
+          capital_inicial: storage.get("money_available_for_goal"),
+          horizonte_temporal: storage.get("desired_time"),
+          tolerancia_al_riesgo_id: storage.get("risk_tolerance_id"),
+        }
+
+        const sessionInstance = await newCopilotSession(data);
+        console.log(sessionInstance);
+
+        // const wizard_completed = storage.get("wizard_completed");
+
       } catch (e) {
         setErrorText(e.message);
         console.error(e);

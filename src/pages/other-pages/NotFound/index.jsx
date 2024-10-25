@@ -1,17 +1,16 @@
 import Footer1 from '@/components/footer/Footer1';
 import PageTitle from '@/components/PageTitle';
-import TopNavigationBar from '@/components/topbar/TopNavigationBar';
+import TopNavigationBarCustom from '@/components/topbar/TopNavigationBarCustom';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 const NotFound = () => {
   return <>
       <PageTitle title='Page Not Found' />
 
-      <TopNavigationBar menuProps={{
-      showContactUs: true,
-      showDocs: true,
-      ulClassName: 'mx-auto'
-    }} showSignUp showBuyNow />
+      <TopNavigationBarCustom menuProps={{
+        showContactUs: true,
+        ulClassName: 'mx-auto'
+      }} showSignUp />
 
       <main>
         <section className="pt-8 pt-xl-9">
@@ -48,7 +47,7 @@ const NotFound = () => {
 
                 <p className="mb-4">The page you  were looking for doesn't exist</p>
 
-                <Link to="/" className="btn btn-dark mb-0">Back to Homepage</Link>
+                <Link to="/" className="btn btn-dark mb-0">Ir al Inicio</Link>
               </Col>
             </Row>
           </Container>
