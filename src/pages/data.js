@@ -246,7 +246,7 @@ export const sessionPorpuses = [
     {
         description: "Fortalecer mis conocimientos financieros",
         value: 1,
-        path: "/wizard",
+        path: "/chat",
     },
     {
         description: "Busco asistencia para lograr un objetivo personal",
@@ -256,6 +256,6 @@ export const sessionPorpuses = [
     {
         description: "Obtener información de los mercados y realizar investigación financiera",
         value: 3,
-        path: "/wizard",
+        path: "/chat",
     }
 ]
