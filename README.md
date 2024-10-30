@@ -6,7 +6,7 @@ Este proyecto es una aplicación frontend basada en React y configurada con Vite
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/maverik-react-js.git
+   git clone https://github.com/alexcabezas1/maverik-react-js.git
    ```
 2. Navega al directorio del proyecto:
    ```bash
