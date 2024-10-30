@@ -16,6 +16,7 @@ export const signUp = async ({
   q6,
   q7,
 }) => {
+  console.log("autenticando el usuario ...");
   const api = getAxiosClient();
   const data = { 
     email: email,

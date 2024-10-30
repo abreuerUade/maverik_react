@@ -75,7 +75,7 @@ const SignUpPage = () => {
         msg: "Registro completado. Te enviamos la clave a tu buzón de correo electrónico; usála para iniciar sesión.",
         type: "success",
       })
-      setTimeout(() => navigate("/sign_in"), 5000);
+      setTimeout(() => navigate("/auth/sign-in"), 5000);
     } catch (err) {
       setFlash(err.message)
     }

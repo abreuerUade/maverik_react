@@ -1,2 +1,2 @@
 export { signUp } from "@/services/users";
-export { newCopilotSession } from "@/services/copilot_sessions";
+export { newCopilotSession, sendInput } from "@/services/copilot_sessions";
