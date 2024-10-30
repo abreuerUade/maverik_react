@@ -1,30 +1,41 @@
-# React + javaScript + Vite
+# Proyecto Maverik: Interfaz de Usuario. Aplicación React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación frontend basada en React y configurada con Vite para una experiencia de desarrollo rápida y optimizada. Incluye una variedad de dependencias y configuraciones para proporcionar una funcionalidad avanzada y una interfaz atractiva.
 
-Currently, two official plugins are available:
+## Instalación
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/maverik-react-js.git
+   ```
+2. Navega al directorio del proyecto:
+   ```bash
+   cd maverik-react-js
+   ```
+3. Instala las dependencias usando npm o yarn:
+   ```bash
+   npm install
+   # o si usas Yarn
+   yarn install
+   ```
 
-## Expanding the ESLint configuration
+## Uso
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Para iniciar la aplicación en un entorno de desarrollo, utiliza el siguiente comando:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Esto ejecutará un servidor de desarrollo y estará disponible en `http://localhost:3000`.
+
+## Configuración
+
+El proyecto incluye los siguientes archivos de configuración:
+
+- **.eslintrc.cjs**: Configuración para ESLint.
+- **.prettierrc**: Configuración para Prettier.
+- **vite.config.js**: Configuración de Vite para optimización y plugins.
+- **vercel.json**: Configuración para despliegue en Vercel.
+
+Se debe modificar el archivo `.env` para configurar las variables de entorno necesarias.
