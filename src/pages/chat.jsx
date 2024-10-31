@@ -27,7 +27,6 @@ function ChatComponent() {
   const [isResponseLoading, setIsResponseLoading] = useState(false);
   const [errorText, setErrorText] = useState('');
   const [isShowSidebar, setIsShowSidebar] = useState(false);
-  const [loading, setLoading] = useState(false);
   const scrollToLastItem = useRef(null);
 
   const {
@@ -54,7 +53,7 @@ function ChatComponent() {
     try {
       setIsResponseLoading(true);
       showNotification({
-        message: 'Estoy enviando su consulta, espere un momento ...',
+        message: 'Su consulta está siendo analizada',
         type: 'success',
         delay: 7000,
       });
@@ -178,10 +177,10 @@ function ChatComponent() {
     }
 
     const session_id = storage.get("session_id");
-    if (!loading && !session_id) {
-      setLoading(true);
+    if (!session_id) {
+      setIsResponseLoading(true);
       doCreateSession();
-      setLoading(false);
+      setIsResponseLoading(false);
     } 
   });
 
@@ -231,13 +230,13 @@ function ChatComponent() {
       <TopNavigationBarCustom menuProps={{
       showContactUs: true,
       ulClassName: 'mx-auto'
-    }} showSignUp />
+    }} showSignUp />  
 
       <main>
       <section className="position-relative overflow-hidden">
       <Container className="position-relative">
       <div className='chat-container'>
-        <section className={`sidebar ${isShowSidebar ? 'open' : ''}`}>
+        <section className="sidebar open">
           <div className='sidebar-header' onClick={createNewChat} role='button'>
             <BiPlus size={20} color="white"/>
             <button>Nueva Sesión</button>
@@ -297,11 +296,11 @@ function ChatComponent() {
         </section>
 
         <section className='main'>
+          <div className='empty-chat-container'>
+            <h3>Copiloto Financiero</h3>
+          </div>
           {!currentTitle && (
-            <div className='empty-chat-container'>
-              <h1>Copiloto Financiero</h1>
-              <h3>Cómo puedo ayudarte?</h3>
-            </div>
+            <p>He recibido tu consulta, en breve recibirás asistencia.</p>
           )}
 
           {isShowSidebar ? (
@@ -355,7 +354,7 @@ function ChatComponent() {
               />
               </Col>
               <Col className="col-2 p-2">
-              <button type='submit' className='btn btn-primary' disabled={loading}>
+              <button type='submit' className='btn btn-primary' disabled={isResponseLoading}>
               Consultar
               </button>
               </Col>
