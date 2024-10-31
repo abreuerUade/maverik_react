@@ -6,6 +6,8 @@ import LogoBox from '@/components/LogoBox';
 import MobileNavbarToggler from '@/components/topbar/MobileNavbarToggler';
 import StickyHeader from '@/components/topbar/StickyHeader';
 import useToggle from '@/hooks/useToggle';
+import { useAuthContext } from '@/states/useAuthContext';
+
 const ThemeToggleDropdown = lazy(() => import('@/components/topbar/ThemeToggleDropdown'));
 
 const TopNavigationBarCustom = ({
@@ -22,6 +24,18 @@ const TopNavigationBarCustom = ({
     isTrue: isMenuOpen,
     toggle: toggleMenu
   } = useToggle(window.innerWidth >= 1200);
+
+  const {
+    user,
+    isAuthenticated,
+    removeSession
+  } = useAuthContext();
+
+  const logout = (e) => {
+    e.preventDefault();
+    removeSession();
+  };
+
   return <StickyHeader className="header-absolute" {...props}>
       {children}
       <nav className={`navbar navbar-expand-xl ${navClassName ?? ''}`}>
@@ -53,11 +67,16 @@ const TopNavigationBarCustom = ({
                 Registrarse
               </Link>
             </li>}
+        
             <li className="nav-item me-2 d-none d-sm-block">
-              <Link to="/auth/sign-in" className="btn btn-sm btn-light mb-0">
+              {!isAuthenticated && <Link to="/auth/sign-in" className="btn btn-sm btn-light mb-0">
                 <BsPersonCircle className="me-1" />
                 Iniciar Sesión
-              </Link>
+              </Link>}
+              {isAuthenticated && <Link onClick={(e) => logout(e)} className="btn btn-sm btn-light mb-0">
+                <BsPersonCircle className="me-1" />
+                Cerrar Sesión
+              </Link>}
             </li>
 
             {darkButton && <li className="nav-item d-none d-sm-block ms-2">

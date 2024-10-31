@@ -18,16 +18,15 @@ import storage from "@/services/shared/storage";
 
 export const SessionPurposeSelector = () => {
     const { user } = useAuthContext();
-    console.log("user:", user); // TODO: redirect if not logged
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("user:", user); // TODO: redirect if not logged
         storage.set("wizard_completed", false);
     }, []);
 
     const goTo = (e, path, session_purpose_id) => {
         e.preventDefault();
-        console.log(path, session_purpose_id);
         storage.set("session_purpose_id", session_purpose_id);
         navigate(path);
     }
@@ -62,7 +61,6 @@ export const GoalSelector = () => {
     const navigate = useNavigate();
     const goTo = (e, path, goal_id) => {
         e.preventDefault();
-        console.log(path, goal_id);
         storage.set("goal_id", goal_id);
         navigate(path);
     }
@@ -94,12 +92,10 @@ export const GoalDetailsForm = () => {
     const navigate = useNavigate();
     const [ riskTolerance, setRiskTolerance ] = useState(null);
     const { goal_id } = useParams();
-    console.log(goal_id);
 
     const goal = goals.find((e) => e.value === Number(goal_id))
 
     const onSubmit = (values) => {
-        console.log(values);
         const { money_available_for_goal, desired_time, risk_tolerance } = values;
 
         storage.set("money_available_for_goal", money_available_for_goal);

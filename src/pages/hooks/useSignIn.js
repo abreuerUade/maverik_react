@@ -37,14 +37,16 @@ const useSignIn = () => {
   };
   const login = handleSubmit(async values => {
     try {
+      setLoading(true);
       const res = await api.post('/user/login', values);
-      console.log(res);
+
       if (res.data.access_token) {
         storage.clear();
         removeSession();
         saveSession({
           ...(res.data ?? {}),
-          access_token: res.data.access_token
+          access_token: res.data.access_token,
+          username: res.data.user_name,
         });
         storage.set(tokenName, res.data.access_token);
         redirectUser();

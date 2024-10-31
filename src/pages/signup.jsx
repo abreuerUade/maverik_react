@@ -11,20 +11,25 @@ import { BsPlusLg } from "react-icons/bs";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import { Link, useNavigate } from "react-router-dom";
+import { useNotificationContext } from '@/states/useNotificationContext';
 import { testInvestorQuestions } from "@/pages/data";
-import { signUp } from "@/services"
+import { signUp } from "@/services";
 import { getConfig } from "@/services/shared/config"
 import _ from 'lodash';
 
 const SignUpPage = () => {
-  console.log(getConfig());
   const questions = Object.fromEntries(
     testInvestorQuestions.map(({id, question, options}) => ([id, 0]))
   ); 
 
   const [choices, setChoices] = useState(questions); // 7 questions
   const [flash, setFlash] = useState({msg: "", type: "primary"});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const {
+    showNotification
+  } = useNotificationContext();
 
   const handleChange = e => {
     e.persist();
@@ -62,7 +67,7 @@ const SignUpPage = () => {
   );
 
   const signUpSubmit = handleSubmit(async values => {
-    console.log("data: ", values);
+    setLoading(true);
     const fecha_nacimiento_dia = values.fecha_nacimiento_dia.toString().padStart(2, "0");
     const fecha_nacimiento_mes = values.fecha_nacimiento_mes.toString().padStart(2, "0");
     const fecha_nacimiento_anio = values.fecha_nacimiento_anio.toString(); 
@@ -71,13 +76,21 @@ const SignUpPage = () => {
 
     try {
       const new_user = signUp({...values, fecha_nacimiento});
-      setFlash({
-        msg: "Registro completado. Te enviamos la clave a tu buzón de correo electrónico; usála para iniciar sesión.",
-        type: "success",
-      })
+      // setFlash({
+      //   msg: "Registro completado. Te enviamos la clave a tu buzón de correo electrónico; usála para iniciar sesión.",
+      //   type: "success",
+      // })
+      showNotification({
+        message: 'Registro completado. Te enviamos la clave a tu buzón de correo electrónico; usála para iniciar sesión.',
+        type: 'success',
+        delay: 7000,
+      });
+
       setTimeout(() => navigate("/auth/sign-in"), 5000);
     } catch (err) {
       setFlash(err.message)
+    } finally {
+      setLoading(false);
     }
   });
 
@@ -168,7 +181,7 @@ const SignUpPage = () => {
                       <div>
                         <div className="align-items-center mt-0">
                           <div className="d-grid">
-                            <button className="btn btn-primary mb-0" type="submit">Crear cuenta</button>
+                            <button className="btn btn-primary mb-0" type="submit" disabled={loading}>Crear cuenta</button>
                           </div>
                         </div>
                       </div>
